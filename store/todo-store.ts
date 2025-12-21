@@ -5,39 +5,59 @@ import { Todo } from "../type/todo.ts";
 
 class TodoStore {
   private repository: TodoRepository;
-  private state: State<Todo[]>;
+  private _state: State<Todo[]>;
 
   constructor() {
     this.repository = new TodoRepository(new LocalStorage());
-    this.state = new State([]);
+    this._state = new State([]);
   }
 
   private update(updated: Todo[]): void {
-    this.state.value = updated;
+    this._state.value = updated;
     this.repository.update(updated);
   }
 
+  get state(): State<Todo[]> {
+    return this._state;
+  }
+
+  fetch(): void {
+    const prev = this.repository.get();
+    this._state.value = [...prev];
+  }
+
   add(value: Todo): void {
-    const updated = [...this.state.value, value];
+    const updated = [...this._state.value, value];
     this.update(updated);
   }
 
   remove(id: number): void {
-    const value = this.state.value;
+    const value = this._state.value;
     const updated = value.filter((todo) => todo.id !== id);
 
     this.update(updated);
   }
 
   changeDone(id: number): void {
-    const updated = this.state.value.map((todo) => {
+    const updated = this._state.value.map((todo) => {
       if (todo.id === id) {
-        return { ...todo, done: !todo.isDone };
+        return { ...todo, isDone: !todo.isDone };
       }
       return todo;
     });
 
     this.update(updated);
+  }
+
+  getId(): number {
+    const length = this._state.value.length;
+    if (length === 0) {
+      return 1;
+    }
+
+    const lastItem: Todo = this._state.value[length - 1];
+
+    return lastItem.id + 1;
   }
 }
 
