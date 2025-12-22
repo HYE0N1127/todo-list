@@ -8,7 +8,7 @@ export class Input {
   }
 
   add() {
-    const value = this.element.value;
+    const value: string = this.element.value;
 
     if (!value) {
       alert("내용을 입력해주세요");

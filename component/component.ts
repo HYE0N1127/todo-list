@@ -1,4 +1,3 @@
-import { Identifier } from "./../node_modules/@types/estree/index.d";
 export class Component {
   public element: HTMLElement;
 
