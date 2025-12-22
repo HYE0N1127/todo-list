@@ -1,9 +1,9 @@
-import { State } from "./../../lib/state/state";
 import { todoStore } from "../../store/todo-store.ts";
+import { Todo } from "../../type/todo.ts";
 import { RepaintableComponent } from "../component.ts";
 import { TodoComponent } from "./todo.ts";
 
-export class TodosComponent extends RepaintableComponent {
+export class TodosComponent extends RepaintableComponent<Todo[]> {
   private renderer: typeof TodoComponent;
 
   constructor(renderer: typeof TodoComponent) {
@@ -19,7 +19,7 @@ export class TodosComponent extends RepaintableComponent {
     this.rendering();
   }
 
-  private rendering() {
+  protected rendering(): void {
     const list = todoStore.state.value;
     const elements = list.map((todo) => new this.renderer(todo).element);
 

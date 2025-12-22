@@ -1,7 +1,7 @@
 import { Input } from "../../lib/todo/input/index.ts";
 import { Component } from "../component.ts";
 
-export class InputComponent extends Component {
+export class InputComponent extends Component<void> {
   constructor() {
     super(`
       <div class="todo__input-group">
@@ -18,7 +18,7 @@ export class InputComponent extends Component {
     this.rendering();
   }
 
-  private rendering() {
+  protected rendering(): void {
     const inputElement: HTMLInputElement = this.element.querySelector(
       "#todo__input"
     ) as HTMLInputElement;

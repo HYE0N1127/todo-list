@@ -2,7 +2,7 @@ import { todoStore } from "../../store/todo-store.ts";
 import { Todo } from "../../type/todo.ts";
 import { Component } from "../component.ts";
 
-export class TodoComponent extends Component {
+export class TodoComponent extends Component<Todo> {
   constructor(todo: Todo) {
     super(`
       <li class="todo" data-id="1">
@@ -23,7 +23,7 @@ export class TodoComponent extends Component {
     this.rendering(todo);
   }
 
-  private rendering(todo: Todo) {
+  protected rendering(todo: Todo): void {
     this.element.setAttribute("data-id", todo.id.toString());
 
     const textElement: HTMLSpanElement = this.element.querySelector(

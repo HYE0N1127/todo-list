@@ -1,5 +1,5 @@
-export class Component {
-  public element: HTMLElement;
+export abstract class Component<T> {
+  public readonly element: HTMLElement;
 
   constructor(htmlString: string) {
     const template: HTMLTemplateElement = document.createElement("template");
@@ -18,9 +18,11 @@ export class Component {
       parent.insertAdjacentElement(position, this.element);
     }
   }
+
+  protected abstract rendering(data?: T): void;
 }
 
-export class RepaintableComponent extends Component {
+export abstract class RepaintableComponent<T> extends Component<T> {
   constructor(htmlString: string) {
     super(htmlString);
   }
@@ -54,4 +56,6 @@ export class RepaintableComponent extends Component {
 
     prev.forEach((item) => item.remove());
   }
+
+  protected abstract rendering(data: T): void;
 }
