@@ -1,9 +1,8 @@
 import { todoStore } from "../../store/todo-store.ts";
-import { Todo } from "../../type/todo.ts";
-import { RepaintableComponent } from "../component.ts";
+import { ComponentWithChildren } from "../component.ts";
 import { TodoComponent } from "./todo.ts";
 
-export class TodosComponent extends RepaintableComponent<Todo[]> {
+export class TodosComponent extends ComponentWithChildren {
   private renderer: typeof TodoComponent;
 
   constructor(renderer: typeof TodoComponent) {
@@ -13,15 +12,17 @@ export class TodosComponent extends RepaintableComponent<Todo[]> {
 
     this.renderer = renderer;
 
-    todoStore.state.subscribe(() => this.rendering());
-    todoStore.fetch();
+    todoStore.state.subscribe(() => {
+      this.render();
+    });
 
-    this.rendering();
+    todoStore.fetch();
+    this.render();
   }
 
-  protected rendering(): void {
+  protected render(): void {
     const list = todoStore.state.value;
-    const elements = list.map((todo) => new this.renderer(todo).element);
+    const elements = list.map((todo) => new this.renderer({ todo }).element);
 
     this.update(elements);
   }

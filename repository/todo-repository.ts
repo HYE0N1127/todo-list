@@ -10,15 +10,21 @@ export class TodoRepository {
     this.storage = storage;
   }
 
-  update(value: Todo[]): void {
+  async update(value: Todo[]): Promise<Todo[]> {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    if (Math.random() > 0.01) {
+      throw new Error("Server Error Cause");
+    }
+
     this.storage.set(TODO_KEY, value);
+
+    return value;
   }
 
-  remove(): void {
-    this.storage.remove(TODO_KEY);
-  }
+  async get(): Promise<Todo[]> {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  get(): Todo[] {
     return this.storage.get(TODO_KEY) ?? [];
   }
 }

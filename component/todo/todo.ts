@@ -2,9 +2,14 @@ import { todoStore } from "../../store/todo-store.ts";
 import { Todo } from "../../type/todo.ts";
 import { Component } from "../component.ts";
 
-export class TodoComponent extends Component<Todo> {
-  constructor(todo: Todo) {
-    super(`
+type Props = {
+  todo: Todo;
+};
+
+export class TodoComponent extends Component<Props> {
+  constructor(props: Props) {
+    super(
+      `
       <li class="todo" data-id="1">
         <div class="todo__content">
           <input type="checkbox" class="todo__checkbox" />
@@ -18,12 +23,16 @@ export class TodoComponent extends Component<Todo> {
           X
         </button>
       </li>
-    `);
+    `,
+      props
+    );
 
-    this.rendering(todo);
+    this.render();
   }
 
-  protected rendering(todo: Todo): void {
+  protected render(): void {
+    const { todo } = this.props;
+
     this.element.setAttribute("data-id", todo.id.toString());
 
     const textElement: HTMLSpanElement = this.element.querySelector(
@@ -48,7 +57,7 @@ export class TodoComponent extends Component<Todo> {
         this.element.classList.remove("done");
       }
 
-      todoStore.changeDone(todo.id);
+      todoStore.toggleDone(todo.id);
     };
 
     if (todo.isDone) {
