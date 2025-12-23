@@ -1,4 +1,4 @@
-import { todoStore } from "../../store/todo-store.ts";
+import { fetchTodosQuery } from "../../lib/query/todos.ts";
 import { ComponentWithChildren } from "../component.ts";
 import { TodoComponent } from "./todo.ts";
 
@@ -12,16 +12,20 @@ export class TodosComponent extends ComponentWithChildren {
 
     this.renderer = renderer;
 
-    todoStore.state.subscribe(() => {
+    const { data, execute } = fetchTodosQuery;
+
+    data.subscribe(() => {
       this.render();
     });
 
-    todoStore.fetch();
     this.render();
+
+    execute();
   }
 
   protected render(): void {
-    const list = todoStore.state.value;
+    const list = fetchTodosQuery.data.value ?? [];
+
     const elements = list.map((todo) => new this.renderer({ todo }).element);
 
     this.update(elements);

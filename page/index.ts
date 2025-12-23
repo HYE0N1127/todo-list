@@ -1,8 +1,9 @@
 import { ErrorComponent } from "../component/error/error.ts";
 import { InputComponent } from "../component/input/input.ts";
+import { SkeletonComponent } from "../component/loading/skeleton.ts";
 import { TodoComponent } from "../component/todo/todo.ts";
 import { TodosComponent } from "../component/todo/todos.ts";
-import { todoStore } from "../store/todo-store.ts";
+import { todos } from "../service/todos/index.ts";
 
 class App {
   constructor() {
@@ -17,17 +18,16 @@ class App {
 
     const input = new InputComponent({
       placeholder: "할 일을 입력해주세요",
-      onSubmit: (value) => {
-        todoStore.add(value);
-      },
+      onSubmit: todos.add,
     });
 
-    const todos = new TodosComponent(TodoComponent);
-
+    const list = new TodosComponent(TodoComponent);
+    const skeleton = new SkeletonComponent();
     const error = new ErrorComponent();
 
     input.attachTo(todoRoot);
-    todos.attachTo(todoRoot);
+    skeleton.attachTo(todoRoot);
+    list.attachTo(todoRoot);
     error.attachTo(root);
   }
 }

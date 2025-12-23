@@ -1,4 +1,4 @@
-import { todoStore } from "../../store/todo-store.ts";
+import { todos } from "../../service/todos/index.ts";
 import { Todo } from "../../type/todo.ts";
 import { Component } from "../component.ts";
 
@@ -57,7 +57,7 @@ export class TodoComponent extends Component<Props> {
         this.element.classList.remove("done");
       }
 
-      todoStore.toggleDone(todo.id);
+      todos.toggleDone(todo.id);
     };
 
     if (todo.isDone) {
@@ -65,7 +65,7 @@ export class TodoComponent extends Component<Props> {
     }
 
     deleteButton.onclick = () => {
-      todoStore.remove(todo.id);
+      todos.remove(todo.id);
     };
   }
 }

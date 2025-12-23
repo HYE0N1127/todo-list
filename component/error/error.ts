@@ -1,4 +1,4 @@
-import { todoStore } from "../../store/todo-store.ts";
+import { fetchTodosQuery, updateTodosQuery } from "../../lib/query/todos.ts";
 import { Component } from "../component.ts";
 
 export class ErrorComponent extends Component {
@@ -11,7 +11,11 @@ export class ErrorComponent extends Component {
     `
     );
 
-    todoStore.error.subscribe(() => {
+    fetchTodosQuery.error.subscribe(() => {
+      this.render();
+    });
+
+    updateTodosQuery.error.subscribe(() => {
       this.render();
     });
 
@@ -23,7 +27,7 @@ export class ErrorComponent extends Component {
       ".error__message"
     ) as HTMLSpanElement;
 
-    const error = todoStore.error.value;
+    const error = fetchTodosQuery.error.value || updateTodosQuery.error.value;
 
     if (error != null) {
       messageElement.textContent = error.message;

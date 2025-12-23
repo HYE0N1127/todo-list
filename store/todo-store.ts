@@ -2,6 +2,7 @@ import { State } from "./../lib/state/state";
 import { LocalStorage } from "../lib/storage/storage.ts";
 import { TodoRepository } from "../repository/todo-repository.ts";
 import { Todo } from "../type/todo.ts";
+import { generateId } from "../util/generate-id.ts";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -76,7 +77,7 @@ class TodoStore {
 
   add(value: string): void {
     const update: Todo = {
-      id: this.generateId(),
+      id: generateId(),
       content: value,
       isDone: false,
     };
@@ -101,15 +102,6 @@ class TodoStore {
     });
 
     this.update(updated);
-  }
-
-  private generateId(length = 10): string {
-    const chars = "abcdefghijklmnopqrstuvwzyx0123456789";
-
-    return Array.from(
-      { length },
-      () => chars[Math.floor(Math.random() * (chars.length - 1))]
-    ).join("");
   }
 }
 

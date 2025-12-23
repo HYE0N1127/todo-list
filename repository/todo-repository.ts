@@ -1,4 +1,4 @@
-import { Storage } from "../lib/storage/storage.ts";
+import { LocalStorage, Storage } from "../lib/storage/storage.ts";
 import { Todo } from "../type/todo.ts";
 
 const TODO_KEY = "todo-storage-key";
@@ -10,8 +10,8 @@ export class TodoRepository {
     this.storage = storage;
   }
 
-  async update(value: Todo[]): Promise<Todo[]> {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  public update = async (value: Todo[]): Promise<Todo[]> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (Math.random() > 0.01) {
       throw new Error("Server Error Cause");
@@ -20,11 +20,13 @@ export class TodoRepository {
     this.storage.set(TODO_KEY, value);
 
     return value;
-  }
+  };
 
-  async get(): Promise<Todo[]> {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  public get = async (): Promise<Todo[]> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return this.storage.get(TODO_KEY) ?? [];
-  }
+  };
 }
+
+export const todoRepository = new TodoRepository(new LocalStorage());
